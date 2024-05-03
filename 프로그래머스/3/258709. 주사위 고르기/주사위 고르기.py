@@ -6,7 +6,7 @@ def get_win_num(ssums, osums):
     for os, on in osums.items():
         for ss, sn in ssums.items():
             if ss > os:
-                win_num += sn*on # NOTE 틀린 부분. Compuation cost 를 줄이는 방법 두 가지. 1) 모든 경우의 수에 대해  binary search. 2) 합이 같은 경우를 하나로 묶고, 곱을 통해 전체 경우의 수 연산. 예를 들어, osums 중 2가 5개, ssums 중 3이 3개면 ssums 가 3*5=15번 이긴 것
+                win_num += sn*on # NOTE 틀린 부분. Compuation cost 를 줄이는 방법 두 가지. 1) 모든 경우의 수에 대해  binary search. 2) 합이 같은 경우를 하나로 묶고, 곱을 통해 전체 경우의 수 연산. 예를 들어, osums 중 2가 5개, ssums 중 3이 3개면 ssums 가 3*5=15번 이긴 것..
     return win_num
         
 def get_sums(sdice):
