@@ -1,20 +1,20 @@
 #def solution(triangle):
 #    answer = 0
 #    return answer
-#240311
+# 240503
 def solution(triangle):
     tt = triangle
-    answer = 0
-    for i in range(len(tt)):
+    for i, row in enumerate(tt):
         if i == 0:
             continue
-        for j in range(len(tt[i])):
-            if j == 0:
-                tt[i][j] += tt[i-1][j]
-            elif j == len(tt[i])-1:
-                tt[i][j] += tt[i-1][j-1]
-            else:
-                tt[i][j] += max(tt[i-1][j-1] , tt[i-1][j])
+        else:
+            for j in range(len(row)):
+                if j == 0:
+                    tt[i][j] += tt[i-1][j]
+                elif j == len(row)-1:
+                    tt[i][j] += tt[i-1][j-1]
+                else:
+                    tt[i][j] += max(tt[i-1][j], tt[i-1][j-1])
         
     return max(tt[-1])
 
@@ -30,6 +30,28 @@ def solution(triangle):
 
 
 
+
+
+
+
+
+
+#240311
+#def solution(triangle):
+#    tt = triangle
+#    answer = 0
+#    for i in range(len(tt)):
+#        if i == 0:
+#            continue
+#        for j in range(len(tt[i])):
+#            if j == 0:
+#                tt[i][j] += tt[i-1][j]
+#            elif j == len(tt[i])-1:
+#                tt[i][j] += tt[i-1][j-1]
+#            else:
+#                tt[i][j] += max(tt[i-1][j-1] , tt[i-1][j])
+#        
+#    return max(tt[-1])
 
 
 #def solution(triangle):
