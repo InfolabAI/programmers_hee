@@ -1,57 +1,77 @@
 #def solution(m, n, puddles):
 #    return 0
-# 240313
-import numpy as np
-def printm(map):
-    print()
+# 240503
+def pmap(map):
     for row in map:
         print(row)
+        
 def solution(m, n, puddles):
-    #map = np.zeros((n+1, m+1)) # NOTE 틀린 부분. list 가 빠름.
-    #map = [[0] * (m+1)] * (n+1) # NOTE 틀린 부분. list 을 이렇게 초기화 하면 [1][1] 로 접근해서 값 넣는게 실패. 한 열단위로만 넣어짐.
-    map = [[0] * (m+1) for _ in range(n+1)]
-    for c, r in puddles: # NOTE 틀린 부분. 순서 또 틀림.
-        map[r][c] = -1
+    # m == w, n == h
+    map = [[0 for _ in range(m+1)] for _ in range(n+1)]
+    for w,h in puddles:
+        map[h][w] = -1
     map[1][1] = 1
-    for r in range(1,n+1):
-        for c in range(1,m+1):
-            if (r,c) == (1,1):
-                continue
-            if map[r][c] == -1:
-                map[r][c] = 0
-            elif map[r][c] == 0:
-                map[r][c] += (map[r-1][c]+map[r][c-1])
-                
-    #printm(map)
+    
+    for w in range(1, m+1):
+        for h in range(1, n+1):
+            if map[h][w] == 0:
+                map[h][w] = map[h-1][w] + map[h][w-1]
+            elif map[h][w] == -1:
+                map[h][w] = 0
+        
     
     return map[-1][-1] % 1000000007
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 240313
+#import numpy as np
+#def printm(map):
+#    print()
+#    for row in map:
+#        print(row)
+#def solution(m, n, puddles):
+#    #map = np.zeros((n+1, m+1)) # NOTE 틀린 부분. list 가 빠름.
+#    #map = [[0] * (m+1)] * (n+1) # NOTE 틀린 부분. list 을 이렇게 초기화 하면 [1][1] 로 접근해서 값 넣는게 실패. 한 열단위로만 넣어짐.
+#    map = [[0] * (m+1) for _ in range(n+1)]
+#    for c, r in puddles: # NOTE 틀린 부분. 순서 또 틀림.
+#        map[r][c] = -1
+#    map[1][1] = 1
+#    for r in range(1,n+1):
+#        for c in range(1,m+1):
+#            if (r,c) == (1,1):
+#                continue
+#            if map[r][c] == -1:
+#                map[r][c] = 0
+#            elif map[r][c] == 0:
+#                map[r][c] += (map[r-1][c]+map[r][c-1])
+#                
+#    #printm(map)
+#    
+#    return map[-1][-1] % 1000000007
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Reinforcement learning 
 #def solution(m, n, puddles):
 #    A = [[0] * (m+1) for _ in range(n+1)]
