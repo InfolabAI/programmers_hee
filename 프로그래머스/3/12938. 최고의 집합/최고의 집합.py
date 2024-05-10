@@ -7,12 +7,10 @@ def solution(n, s):
     if sum(nums) == 0:
         return [-1]
     
-    #print(nums)
     for _ in range(s%n):
         hq.heappush(nums, hq.heappop(nums)+1)
-        #print(nums)
     
-    nums.sort()
+    nums.sort() # NOTE 틀린 부분. heap 은 오름차순 정렬을 보장하지 않으므로,sort 필요
     return nums
 
 
