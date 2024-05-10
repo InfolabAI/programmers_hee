@@ -1,15 +1,50 @@
 def solution(n, s):
-    # 곱이 최대가 되려면 모든 수가 최대한 같은 값이어야 함. 즉, 모든 수가 int(s/n) 에 가까워야 함
-    answer = []
-    a = int(s/n)
-    if a == 0:
+    return
+import heapq as hq
+def solution(n, s):
+    # 최대한 모든 숫자가 (s//n) 에 가깝거나 1커야 곱이 가장 높음
+    nums = [s//n for _ in range(n)]
+    if sum(nums) == 0:
         return [-1]
-    b = s%n
-    for i in range(n-b):
-        answer.append(a)
-    for i in range(b):
-        answer.append(a+1)
-    return answer
+    
+    #print(nums)
+    for _ in range(s%n):
+        hq.heappush(nums, hq.heappop(nums)+1)
+        #print(nums)
+    
+    nums.sort()
+    return nums
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 240507
+#def solution(n, s):
+#    # 곱이 최대가 되려면 모든 수가 최대한 같은 값이어야 함. 즉, 모든 수가 int(s/n) 에 가까워야 함
+#    answer = []
+#    a = int(s/n)
+#    if a == 0:
+#        return [-1]
+#    b = s%n
+#    for i in range(n-b):
+#        answer.append(a)
+#    for i in range(b):
+#        answer.append(a+1)
+#    return answer
 
 ## ref1
 #def solution(n, s):
