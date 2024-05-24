@@ -7,7 +7,7 @@ NOTE 틀린 부분.
     - edge 는 banned_id 와 매칭되면 1
     - depth 는 len(banned_id), 즉, len(banned_id) 만큼 depth 가 진행될 때, 경우의 수가 몇개인지를 보는 것
 """
-"""예
+"""Stack 의 예
 입력값 〉	["frodo", "fradi", "crodo", "abc123", "frodoc"], ["fr*d*", "abc1**"]
 기댓값	〉	2
 Stack 〉	
@@ -21,7 +21,7 @@ Stack 〉
 []
 {('fradi', 'abc123'), ('frodo', 'abc123')}
 """
-# 풀었는데 시간초과
+# 240524
 from collections import defaultdict
 def match(stra, strb):
     ret = True
