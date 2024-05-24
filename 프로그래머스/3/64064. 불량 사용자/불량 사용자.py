@@ -1,7 +1,12 @@
-# NOTE 틀린 부분.
-# 1. 하나의 user_id 가 다수의 banned_id 에 걸린다면 어떻게 처리하는가? 예를 들어, frodo 가 'fr*d*' 에도 골리고, '*rodo' 에도 걸린다면?
-# 2. 중복된 banned_id 는 어떻게 처리하는가?
-# DFS 로 처리하면 해결되는데, 무엇이 edge, node 인가? node 는 user, edge 는 banned_id 와 매칭되면 1, len(banned_id) 는 depth 와 대응됨, 즉, len(banned_id) 만큼 depth 가 진행될 때, 경우의 수가 몇개인지를 보는 것
+"""
+NOTE 틀린 부분.
+1. 하나의 user_id 가 다수의 banned_id 에 걸린다면 어떻게 처리하는가? 예를 들어, frodo 가 'fr*d*' 에도 골리고, '*rodo' 에도 걸린다면?
+2. 중복된 banned_id 는 어떻게 처리하는가?
+3. DFS 로 처리하면 해결되는데, 무엇이 edge, node 인가? 
+	- node 는 user
+    - edge 는 banned_id 와 매칭되면 1
+    - depth 는 len(banned_id), 즉, len(banned_id) 만큼 depth 가 진행될 때, 경우의 수가 몇개인지를 보는 것
+"""
 """예
 입력값 〉	["frodo", "fradi", "crodo", "abc123", "frodoc"], ["fr*d*", "abc1**"]
 기댓값	〉	2
@@ -44,13 +49,13 @@ def solution(user_id, banned_id):
             for uid in range(len(cuse_user)):
                 if cuse_user[uid]==0:
                     ulist.append(user_id[uid])
-            #if len(ulist) == len(cuse_ban): #cuse_ban 하나가 여러개의 cuse_user 와 매칭될 수 있으므로, cuse_ban 이 모두 0일 때, cuse_user 의 0의 수가 len(cuse_ban) 보다 작을 수 있고 작은 경우는 제외해야 함
+            #if len(ulist) == len(cuse_ban): #경우의수 1: cuse_ban 하나가 여러개의 cuse_user 와 매칭될 수 있으므로, cuse_ban 이 모두 0일 때, cuse_user 의 0의 수가 len(cuse_ban) 보다 작을 수 있고 작은 경우는 제외해야 함
             answer[tuple(ulist)] += 1
                 
         for bid in range(len(cuse_ban)):
             if cuse_ban[bid] != 0:
                 for uid in range(len(cuse_user)):
-                    if cuse_user[uid] !=0 and sum(cuse_ban) != 0 and match(user_id[uid], banned_id[bid]): # NOTE 틀린 부분. 효율성 증가 부분. banned_id 하나가 여러개의 user_id 와 매칭될 수 있으므로, 이미 0 인 cuse_user 를 제외해야 함.
+                    if cuse_user[uid] !=0 and sum(cuse_ban) != 0 and match(user_id[uid], banned_id[bid]): # NOTE 틀린 부분. 효율성 증가 부분. banned_id 하나가 여러개의 user_id 와 매칭될 수 있으므로, 이미 0 인 cuse_user 를 제외해야 함. 이 부분이 있으면, 위에 경우의 수1이 없어도 됨.
                         cuse_user[uid] = 0
                         cuse_ban[bid] = 0
                         stack.append((depth+1, cuse_user[:], cuse_ban[:]))
