@@ -31,7 +31,7 @@ def match(stra, strb):
 def solution(user_id, banned_id):
     use_user = [1 for _ in range(len(user_id))]
     use_ban = [1 for _ in range(len(banned_id))]
-    if len(banned_id) == len(user_id): # 이걸로 테케 하나 통과
+    if len(banned_id) == len(user_id): # NOTE 틀린 부분. 이걸로 테케 하나 통과
         return 1
     
     stack = [(0, use_user, use_ban)]
@@ -39,22 +39,18 @@ def solution(user_id, banned_id):
     min_cuse_ban = 1000
     while stack:
         depth, cuse_user, cuse_ban = stack.pop()
-        #if min_cuse_ban > sum(cuse_ban):
-        #    min_cuse_ban = sum(cuse_ban)
-        #if min_cuse_ban == 0 and sum(cuse_ban) != 0:
-        #    continue
         if depth == len(cuse_ban):
             ulist = []
             for uid in range(len(cuse_user)):
                 if cuse_user[uid]==0:
                     ulist.append(user_id[uid])
-            if len(ulist) == len(cuse_ban): #cuse_ban 하나가 여러개의 cuse_user 와 매칭될 수 있으므로, cuse_ban 이 모두 0일 때, cuse_user 의 0의 수가 len(cuse_ban) 보다 작을 수 있고 작은 경우는 제외해야 함
-                answer[tuple(ulist)] += 1
+            #if len(ulist) == len(cuse_ban): #cuse_ban 하나가 여러개의 cuse_user 와 매칭될 수 있으므로, cuse_ban 이 모두 0일 때, cuse_user 의 0의 수가 len(cuse_ban) 보다 작을 수 있고 작은 경우는 제외해야 함
+            answer[tuple(ulist)] += 1
                 
         for bid in range(len(cuse_ban)):
             if cuse_ban[bid] != 0:
                 for uid in range(len(cuse_user)):
-                    if cuse_user[uid] !=0 and sum(cuse_ban) != 0 and match(user_id[uid], banned_id[bid]):
+                    if cuse_user[uid] !=0 and sum(cuse_ban) != 0 and match(user_id[uid], banned_id[bid]): # NOTE 틀린 부분. 효율성 증가 부분. banned_id 하나가 여러개의 user_id 와 매칭될 수 있으므로, 이미 0 인 cuse_user 를 제외해야 함.
                         cuse_user[uid] = 0
                         cuse_ban[bid] = 0
                         stack.append((depth+1, cuse_user[:], cuse_ban[:]))
