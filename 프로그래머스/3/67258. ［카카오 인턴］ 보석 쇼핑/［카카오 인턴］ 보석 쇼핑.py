@@ -2,8 +2,7 @@ def solution(gems):
     answer = []
     return answer
 
-# 240527 이중 loop 사용함 일부 테케 틀림. 일부 시간 초과.   
-# 240528 loop 하나 사용했지만, 일부 테케 틀림. 일부 시간 초과. 테케 추가 후, append 수정하고, while 문 조건 수정해서 모든 테케 통과했지만, 효율성 통과 못함.set 으로 중복제거하는 것은 너무 느림
+# 정답
 from collections import defaultdict
 from heapq import heappush
 def gems_to_dict(gems, dict_):
@@ -23,7 +22,7 @@ def solution(gems):
     #print(sum([v for k, v in all_gems.items()]))
     while i<=j and j < len(gems):
         #print(i, j, cur_gems)
-        if len(cur_gems) != len(all_gems):
+        if len(cur_gems) != len(all_gems): # NOTE 틀린 부분. 원래 두 dict 의 keys() 끼리 비교하는 구문이었고, 이 때 효율설 13, 15 통과 못했는데, len(dict) 를 비교하니 통과됨
             #print("j++ ", end='')
             if i > 0:
                 # heap 기준(길이), i 위치, j 위치 를 넣음
