@@ -1,5 +1,6 @@
 #def solution(n, vertex):
 #    return
+# 240611 정답인데 느리다. 왜지? 최고답안은 50ms 일때 이건 2500ms 임. sum(visited) 때문이었음.
 from collections import defaultdict, deque
 def solution(n, vertex):
     visited = [0 for _ in range(n+1)]
@@ -11,18 +12,20 @@ def solution(n, vertex):
         
     queue = deque([(1, 0)]) # id, depth
     visited[1] = 1
+    total = []
     while queue:
-        if sum(visited) == n:
-            break
+        #if sum(visited) == n: # NOTE 툴린 부분. 매번 sum 을 하는 것의 computation cost 는 매우 크다. 차라리 total 같은 list 에 그냥 append 하고 나중에 max 수만 세는게 빠름
+        #    break
         s, depth = queue.popleft()
         for t in edges[s]:
             if visited[t] == 0:
                 queue.append([t, depth+1])
+                total.append(queue[-1])
                 visited[t] = 1
-        #print(queue)
+        #print(total)
         
-    maxd = max([d for s, d in queue])
-    return len([d for s, d in queue if d==maxd])
+    maxd = max([d for s, d in total])
+    return len([d for s, d in total if d==maxd])
 
 
 
