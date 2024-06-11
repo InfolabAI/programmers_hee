@@ -1,34 +1,38 @@
 #def solution(n, vertex):
 #    return
-# 240419
-from collections import deque, defaultdict
+from collections import defaultdict, deque
 def solution(n, vertex):
+    visited = [0 for _ in range(n+1)]
     edges = defaultdict(list)
     for s, t in vertex:
-        s, t = s, t
-        edges[s] += [t]
-        edges[t] += [s]
-    visited = [0] * (n+1)
-    
-    queue = deque([(1, 0)])
+        edges[s].append(t)
+        edges[t].append(s)
+    #print(edges)
+        
+    queue = deque([(1, 0)]) # id, depth
     visited[1] = 1
-    total = []
     while queue:
-        s, dist = queue.popleft()
+        if sum(visited) == n:
+            break
+        s, depth = queue.popleft()
         for t in edges[s]:
             if visited[t] == 0:
-                queue.append((t, dist+1))
-                total.append(queue[-1])
+                queue.append([t, depth+1])
                 visited[t] = 1
         #print(queue)
-    
-    max_dist = max([x[1] for x in total])
-    answer = 0
-    for i, dist in total:
-        if dist == max_dist:
-            answer += 1
         
-    return answer
+    maxd = max([d for s, d in queue])
+    return len([d for s, d in queue if d==maxd])
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -89,3 +93,33 @@ def solution(n, vertex):
 #                
 #    return distance.count(max(distance))
 
+
+# 240419
+#from collections import deque, defaultdict
+#def solution(n, vertex):
+#    edges = defaultdict(list)
+#    for s, t in vertex:
+#        s, t = s, t
+#        edges[s] += [t]
+#        edges[t] += [s]
+#    visited = [0] * (n+1)
+#    
+#    queue = deque([(1, 0)])
+#    visited[1] = 1
+#    total = []
+#    while queue:
+#        s, dist = queue.popleft()
+#        for t in edges[s]:
+#            if visited[t] == 0:
+#                queue.append((t, dist+1))
+#                total.append(queue[-1])
+#                visited[t] = 1
+#        #print(queue)
+#    
+#    max_dist = max([x[1] for x in total])
+#    answer = 0
+#    for i, dist in total:
+#        if dist == max_dist:
+#            answer += 1
+#        
+#    return answer
