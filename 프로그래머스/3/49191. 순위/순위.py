@@ -1,48 +1,36 @@
 #def solution(n, results):
 #    return
-#240422
-from collections import defaultdict
-def printmap(adj):
-    for row in adj:
+# 240618
+def printmat(mat):
+    for row in mat:
         print(row)
-
-def num_zero(row):
-    zero = 0
-    for c in row:
-        if c == 0:
-            zero+=1
-    return zero
-
+    print()
+     
 def solution(n, results):
-    #adj = [[0]*(n+1)]*(n+1)
-    # NOTE 틀린 부분. [0]*n 과 [0 for _ in range(n)] 은 다른 리스트이다. [0]*n 은 하나를 바꾸면 전체가 바뀐다.
-    adj = [[0 for _ in range(n)] for _ in range(n)]
-    
-    # 0: no edge, 1: defeat, 2: win
+    mat = [[0 for _ in range(n)] for _ in range(n)]
+    for i in range(n):
+        mat[i][i] = 10
+    # w 2, l 1, ? 0 자신 10
     for w, l in results:
-        w, l = w-1, l-1 # NOTE 틀린 부분. w-1, l-1 을 생각하지 않으면 밑에 3 loop 에서 index 가 안 맞음
-        adj[w][l] = 2
-        adj[l][w] = 1
-        
-    #printmap(adj)
-    #print()
+        w, l = w-1, l-1
+        mat[w][l] = 2
+        mat[l][w] = 1
+    #printmat(mat)
     for k in range(n):
-        for s in range(n):
-            for t in range(n):
-                if adj[s][k] == 2 and adj[k][t] == 2:
-                    adj[s][t] = 2
-                    #print(s, t, "w")
-                if adj[s][k] == 1 and adj[k][t] == 1:
-                    adj[s][t] = 1
-                    #print(s, t, "l")
-
-    #printmap(adj)
-    
+        for w in range(n):
+            for l in range(n):
+                if mat[w][k] == 2 and mat[k][l] == 2:
+                    mat[w][l] = 2
+                    mat[l][w] = 1
+                if mat[w][k] == 1 and mat[k][l] == 1:
+                    mat[w][l] = 1
+                    mat[l][w] = 2
+    #printmat(mat)
     answer = 0
-    for row in adj:
-        if num_zero(row) <= 1:
+    for row in mat:
+        if min(row) != 0:
             answer += 1
-        
+    
     return answer
 
 
@@ -119,3 +107,48 @@ def solution(n, results):
 #    return ans
 
 
+
+#240422
+#from collections import defaultdict
+#def printmap(adj):
+#    for row in adj:
+#        print(row)
+#
+#def num_zero(row):
+#    zero = 0
+#    for c in row:
+#        if c == 0:
+#            zero+=1
+#    return zero
+#
+#def solution(n, results):
+#    #adj = [[0]*(n+1)]*(n+1)
+#    # NOTE 틀린 부분. [0]*n 과 [0 for _ in range(n)] 은 다른 리스트이다. [0]*n 은 하나를 바꾸면 전체가 바뀐다.
+#    adj = [[0 for _ in range(n)] for _ in range(n)]
+#    
+#    # 0: no edge, 1: defeat, 2: win
+#    for w, l in results:
+#        w, l = w-1, l-1 # NOTE 틀린 부분. w-1, l-1 을 생각하지 않으면 밑에 3 loop 에서 index 가 안 맞음
+#        adj[w][l] = 2
+#        adj[l][w] = 1
+#        
+#    #printmap(adj)
+#    #print()
+#    for k in range(n):
+#        for s in range(n):
+#            for t in range(n):
+#                if adj[s][k] == 2 and adj[k][t] == 2:
+#                    adj[s][t] = 2
+#                    #print(s, t, "w")
+#                if adj[s][k] == 1 and adj[k][t] == 1:
+#                    adj[s][t] = 1
+#                    #print(s, t, "l")
+#
+#    #printmap(adj)
+#    
+#    answer = 0
+#    for row in adj:
+#        if num_zero(row) <= 1:
+#            answer += 1
+#        
+#    return answer
