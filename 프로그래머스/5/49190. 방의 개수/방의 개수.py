@@ -1,5 +1,6 @@
 def solution(arrows):
     return
+# 240625
 # 다시 풀기
 # Q: map 을 어떤 개념으로 생각할 것인가? 매우 커질 수 있음.
 # A: 생각할 필요없음. visited 만 생각하면 됨.
@@ -11,7 +12,7 @@ def move1(a, st, map_, room):
     map_[str(st)] += [str(dt)]
     
     if str(st) not in map_[str(dt)] and len(map_[str(dt)])>0:
-        map_[str(dt)] += [str(st)]
+        map_[str(dt)] += [str(st)] # NOTE 틀린 부분. in > out, out > in 모두 저장해야 중복된 방 갯수 증가를 피할 수 있음.
         return room+1, dt
     else:
         map_[str(dt)] += [str(st)]
