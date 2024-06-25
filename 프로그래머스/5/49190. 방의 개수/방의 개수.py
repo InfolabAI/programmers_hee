@@ -1,49 +1,42 @@
+def solution(arrows):
+    return
 # 다시 풀기
 # Q: map 을 어떤 개념으로 생각할 것인가? 매우 커질 수 있음.
 # A: 생각할 필요없음. visited 만 생각하면 됨.
 # Q: 방을 어떻게 셀 것인가? 그냥 세면 너무 비효율적임
 # A: 어떤 이미 방문한 점에 다른 경로로 다시 방문하면 방이 하나 더 생김.
-from collections import defaultdict
-d = [[-1,0], [-1,1], [0,1], [1,1], [1,0], [1,-1], [0,-1], [-1,-1]]
-def out_to_in(a):
-    # 나갈때의 방향이 아니라 들어올 때의 방향으로 변환 후 저장해야 함
-    return a-4 if a-4 >= 0 else a+4
-
-def room_check(st, a, vt, vt_path):
-    nt = [st[0] + d[a][0], st[1] + d[a][1]]
-    ret = False
-    if vt[(nt[0], nt[1])] >= 1:
-        if vt_path[(nt[0], nt[1], a)] == 0:
-            ret = True
-    vt[(st[0], st[1])] += 1
-    vt_path[(st[0], st[1], out_to_in(a))] = 1 # st 에서 나가는 것 # NOTE 틀린 부분. st 에서 나가는 것과 nt 로 들어오는 것 모두를 save 해야 함
-    vt_path[(nt[0], nt[1], a)] = 1 # nt 에게 들어오는 것
-    return ret, nt
-        
-def solution(arrows):
-    st = [0,0]
-    vt = defaultdict(lambda :0)
-    vt_path = defaultdict(lambda :0)
-    #vt[(0,0)] = 1
-    answer = 0 
-    for a in arrows:
-        #print(st, end=f" >{a}> ")
-        # first
-        ret, st = room_check(st, a, vt, vt_path)
-        if ret:
-            answer += 1
-        #print(f"{answer} nt {st}", f"vt {vt.items()} vt_path {vt_path.items()}\n")
-        
-        #print(st, end=f" >{a}> ")
-        # second
-        ret, st = room_check(st, a, vt, vt_path)
-        if ret:
-            answer += 1
-        #print(f"{answer} nt {st}", f"vt {vt.items()} vt_path {vt_path.items()}\n")
+d = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
+def move1(a, st, map_, room):
+    dt = (st[0] + d[a][0], st[1] + d[a][1])
+    map_[str(st)] += [str(dt)]
     
-    return answer
-
-
+    if str(st) not in map_[str(dt)] and len(map_[str(dt)])>0:
+        map_[str(dt)] += [str(st)]
+        return room+1, dt
+    else:
+        map_[str(dt)] += [str(st)]
+        return room, dt
+        
+    # 예)
+    # 1. (0,0) -> (1,0) 이동 시, (0,0)(1,0) out, (1,0)(0,0) in.
+    # 2. (1,1) -> (0,0) 이동 시, (1,1)(0,0) out, (0,0)(1,1) in. 이때, (0,0) out 이 1이므로, 방 1개 추가
+    # 3. (0,0) -> (1,-1) 이동 시, (0,0)(1,-1) out, (1,-1)(0,0) in.
+    # 3. (0,1) -> (0,0) 이동 시, (0,1)(0,0) out, (0,0)(0,1) in. 이때, (0,0) out 이 2이므로, 방 1개 추가
+    # 상관없네. out 이 1 이상이면 out 과 동일하지 않은 in 발생시 무조건 방 1개 추가하면 됨. 즉, map_ 에는 out 만 저장.
+    
+    
+from collections import defaultdict
+def solution(arrows):
+    st = (0, 0)
+    map_ = defaultdict(list)
+    room = 0
+    for a in arrows:
+        room, st = move1(a, st, map_, room)
+        #print(st, room, dict(map_))
+        room, st = move1(a, st, map_, room)
+        #print(st, room, dict(map_))
+    
+    return room
 
 
 
@@ -152,4 +145,45 @@ def solution(arrows):
 #        visited_dir[(next, now)] = 1
 #        now = next
 #
+#    return answer
+
+# 240621
+#from collections import defaultdict
+#d = [[-1,0], [-1,1], [0,1], [1,1], [1,0], [1,-1], [0,-1], [-1,-1]]
+#def out_to_in(a):
+#    # 나갈때의 방향이 아니라 들어올 때의 방향으로 변환 후 저장해야 함
+#    return a-4 if a-4 >= 0 else a+4
+#
+#def room_check(st, a, vt, vt_path):
+#    nt = [st[0] + d[a][0], st[1] + d[a][1]]
+#    ret = False
+#    if vt[(nt[0], nt[1])] >= 1:
+#        if vt_path[(nt[0], nt[1], a)] == 0:
+#            ret = True
+#    vt[(st[0], st[1])] += 1
+#    vt_path[(st[0], st[1], out_to_in(a))] = 1 # st 에서 나가는 것 # NOTE 틀린 부분. st 에서 나가는 것과 nt 로 들어오는 것 모두를 save 해야 함
+#    vt_path[(nt[0], nt[1], a)] = 1 # nt 에게 들어오는 것
+#    return ret, nt
+#        
+#def solution(arrows):
+#    st = [0,0]
+#    vt = defaultdict(lambda :0)
+#    vt_path = defaultdict(lambda :0)
+#    #vt[(0,0)] = 1
+#    answer = 0 
+#    for a in arrows:
+#        #print(st, end=f" >{a}> ")
+#        # first
+#        ret, st = room_check(st, a, vt, vt_path)
+#        if ret:
+#            answer += 1
+#        #print(f"{answer} nt {st}", f"vt {vt.items()} vt_path {vt_path.items()}\n")
+#        
+#        #print(st, end=f" >{a}> ")
+#        # second
+#        ret, st = room_check(st, a, vt, vt_path)
+#        if ret:
+#            answer += 1
+#        #print(f"{answer} nt {st}", f"vt {vt.items()} vt_path {vt_path.items()}\n")
+#    
 #    return answer
