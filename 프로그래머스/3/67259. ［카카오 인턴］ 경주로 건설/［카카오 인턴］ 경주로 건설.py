@@ -18,6 +18,7 @@ def pad(b):
 d = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 from collections import deque
 
+# 240722
 def bfs(board, dr):
     st = (1,1)
     #printm(board)
