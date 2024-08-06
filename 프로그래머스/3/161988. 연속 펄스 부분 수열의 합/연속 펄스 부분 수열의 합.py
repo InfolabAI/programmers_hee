@@ -3,22 +3,35 @@ def solution(sequence):
     return answer
 
 # 24072x.
-# 점화식. pulse+1 일때의 min 값, pulse-1 일때의 min 값을 계속 쌓아나간다
+# NOTE 틀린 부분. DP 임. [1, -1, 1, ...] 일때의 min 값, [-1, 1, -1, ...] 일때의 min 값을 계속 쌓아나간다
+# NOTE 틀린 부분. 카데인 알고리즘의 응용임, 카데인 알고리즘은 직전 최대 부분합을 이용해서 다름 최대 부분합을 계산하는 방법임
+# NOTE 틀린 부분. 펄스를 사용할 때는 최대 부분합을 찾기 위해 약간의 응용이 필요함. 그 응용이 바로 s2-s1mn, s2-s2mn 임. 펄스 이므로, 바로 이전 최소값(음수)를 뺄때가 최대값이라고 볼 수 있기 때문
+"""
+[2, 3, -6, ...] 일때 시뮬레이션 (answer, s1, s2, s1mn, s2mn, s1-s1mn, s2-s2mn 순)
+2	2	-2	0	-2	2	0
+3	-1	1	-1	-2	0	3 # 여기서 s2==1 은 누적합, s2mn==-2 는 직접최소값, s2-s2mn==3 은 최대증가폭임. 최대증가폭은 최대부분합과 동일함.
+9	-7	7	-7	-2	0	9
+10	-8	8	-8	-2	0	10
+10	-5	5	-8	-2	3	7
+10	-4	4	-8	-2	4	6
+10	-2	2	-8	-2	6	4
+10	-6	6	-8	-2	2	8
+
+"""
 def solution(sequence):
     answer = 0
-    s1, s2, s1mn, s2mn = 0, 0, 0, 0
     pulse = 1
+    s1, s2, s1mn, s2mn = 0, 0, 0, 0
     for s in sequence:
         s1 += s * pulse
         s2 += s * -pulse
         
         answer = max(answer, s1-s1mn, s2-s2mn)
         
-        s1mn = min(s1mn, s1)
-        s2mn = min(s2mn, s2)
-        #print(answer, s1, s2, s1mn, s2mn)
-        
+        s1mn, s2mn = min(s1, s1mn), min(s2, s2mn)
         pulse *= -1
+        #print(answer, s1, s2, s1mn, s2mn, s1-s1mn, s2-s2mn)
+        
     return answer
     
 
@@ -75,3 +88,21 @@ def solution(sequence):
 #                max_ = tm
 #    
 #    return max_
+
+# 240724
+#def solution(sequence):
+#    answer = 0
+#    s1, s2, s1mn, s2mn = 0, 0, 0, 0
+#    pulse = 1
+#    for s in sequence:
+#        s1 += s * pulse
+#        s2 += s * -pulse
+#        
+#        answer = max(answer, s1-s1mn, s2-s2mn) # NOTE 틀린 부분. 왜 s1-s1mn 인가?
+#        
+#        s1mn = min(s1mn, s1)
+#        s2mn = min(s2mn, s2)
+#        
+#        pulse *= -1
+#        #print(answer, s1, s2, s1mn, s2mn, s1-s1mn, s2-s2mn)
+#    return answer
