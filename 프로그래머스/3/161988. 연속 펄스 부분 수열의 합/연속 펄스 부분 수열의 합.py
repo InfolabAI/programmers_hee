@@ -18,6 +18,7 @@ def solution(sequence):
 10	-6	6	-8	-2	2	8
 
 """
+# 240806
 def solution(sequence):
     answer = 0
     pulse = 1
