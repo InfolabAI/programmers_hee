@@ -1,7 +1,7 @@
 def solution(dice):
     return
 
-#240806
+#240806 binary search 안 쓰고, Counter 로 computation cost 줄여서 품. 최대 2300ms 가 나옴. 아래 코드 보면, binary search 써도 경우의 수를 줄이지 않으면 5500ms 가 나오므로 충분히 효율적임.
 from itertools import combinations as cb
 from itertools import product as pd
 from collections import Counter
@@ -14,10 +14,10 @@ def get_winrate(ad, bd):
         for sb, nb in bct.items():
             if sa > sb:
                 w += (na*nb)
-            elif sa == sb:
-                wl += (na*nb)
-            else:
-                l += (na*nb)
+            #elif sa == sb:
+            #    wl += (na*nb)
+            #else:
+            #    l += (na*nb)
     return w, wl, l
             
     
