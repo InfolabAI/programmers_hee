@@ -1,38 +1,52 @@
-# 240503
-from itertools import combinations, product
-from collections import defaultdict
-def get_win_num(ssums, osums):
-    win_num = 0
-    for os, on in osums.items():
-        for ss, sn in ssums.items():
-            if ss > os:
-                win_num += sn*on # NOTE 틀린 부분. Compuation cost 를 줄이는 방법 두 가지. 1) 모든 경우의 수에 대해  binary search. 2) 합이 같은 경우를 하나로 묶고, 곱을 통해 전체 경우의 수 연산. 예를 들어, osums 중 2가 5개, ssums 중 3이 3개면 ssums 가 3*5=15번 이긴 것..
-    return win_num
-        
-def get_sums(sdice):
-    sums = defaultdict(lambda:0)
-    for vals in product(*sdice):
-        sums[sum(vals)] += 1
-    return sums
-
-def select_dice(dice):
-    for sids in combinations(range(len(dice)), len(dice)//2):
-        oids = set(range(len(dice))) - set(sids)
-        yield sids, oids
-        
 def solution(dice):
-    best_num = 0
-    for sids, oids in select_dice(dice):
-        sdice = [dice[i] for i in sids]
-        odice = [dice[i] for i in oids]
-        win_num = get_win_num(get_sums(sdice), get_sums(odice))
-        if win_num > best_num:
-            answer = [sids[i] + 1 for i in range(len(sids))]
-            best_num = win_num
+    return
+
+#240806
+from itertools import combinations as cb
+from itertools import product as pd
+from collections import Counter
+def get_winrate(ad, bd):
+    acases = list(map(sum, pd(*ad))) # 선택한 주사위의 경우의 수
+    bcases = list(map(sum, pd(*bd)))
+    act, bct = Counter(acases), Counter(bcases)
+    w, wl, l = 0, 0, 0
+    for sa, na in act.items():
+        for sb, nb in bct.items():
+            if sa > sb:
+                w += (na*nb)
+            elif sa == sb:
+                wl += (na*nb)
+            else:
+                l += (na*nb)
+    return w, wl, l
+            
     
+def select(dice, indices):
+    ret = []
+    for i in indices:
+        ret.append(dice[i])
+    return ret
+
+def choices(dice):
+    a_choices = list(cb(range(len(dice)), len(dice)//2)) # 주사위 선택
+    b_choices = []
+    for a_c in a_choices:
+        b_c = list(set((range(len(dice)))) - set(a_c))
+        b_choices.append(b_c)
+    return a_choices, b_choices
+    
+def solution(dice):
+    mx, answer = 0, 0
+    for (a_c, b_c) in zip(*choices(dice)):
+        ad = select(dice, a_c)
+        bd = select(dice, b_c)
+        w = get_winrate(ad, bd)[0]
+        if w > mx:
+            mx = w
+            answer = list(a_c)
+    for i in range(len(answer)):
+        answer[i] += 1
     return answer
-#def solution(dice):
-#    return
 
 #from itertools import combinations
 #
@@ -191,6 +205,40 @@ def solution(dice):
 #        for ss, sn in ssums.items():
 #            if ss > os:
 #                win_num += sn*on # NOTE 틀린 부분. Compuation cost 를 줄이는 방법 두 가지. 1) 모든 경우의 수에 대해  binary search. 2) 합이 같은 경우를 하나로 묶고, 곱을 통해 전체 경우의 수 연산. 예를 들어, osums 중 2가 5개, ssums 중 3이 3개면 ssums 가 3*5=15번 이긴 것
+#    return win_num
+#        
+#def get_sums(sdice):
+#    sums = defaultdict(lambda:0)
+#    for vals in product(*sdice):
+#        sums[sum(vals)] += 1
+#    return sums
+#
+#def select_dice(dice):
+#    for sids in combinations(range(len(dice)), len(dice)//2):
+#        oids = set(range(len(dice))) - set(sids)
+#        yield sids, oids
+#        
+#def solution(dice):
+#    best_num = 0
+#    for sids, oids in select_dice(dice):
+#        sdice = [dice[i] for i in sids]
+#        odice = [dice[i] for i in oids]
+#        win_num = get_win_num(get_sums(sdice), get_sums(odice))
+#        if win_num > best_num:
+#            answer = [sids[i] + 1 for i in range(len(sids))]
+#            best_num = win_num
+#    
+#    return answer
+
+# 240503
+#from itertools import combinations, product
+#from collections import defaultdict
+#def get_win_num(ssums, osums):
+#    win_num = 0
+#    for os, on in osums.items():
+#        for ss, sn in ssums.items():
+#            if ss > os:
+#                win_num += sn*on # NOTE 틀린 부분. Compuation cost 를 줄이는 방법 두 가지. 1) 모든 경우의 수에 대해  binary search. 2) 합이 같은 경우를 하나로 묶고, 곱을 통해 전체 경우의 수 연산. 예를 들어, osums 중 2가 5개, ssums 중 3이 3개면 ssums 가 3*5=15번 이긴 것..
 #    return win_num
 #        
 #def get_sums(sdice):
