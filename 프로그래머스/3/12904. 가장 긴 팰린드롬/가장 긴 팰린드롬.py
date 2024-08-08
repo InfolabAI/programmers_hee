@@ -1,3 +1,4 @@
+# 240808
 def get_palindrome_odd(s, i):
     offset = 0
     p, n, pp, nn = i, i, i, i
@@ -10,18 +11,18 @@ def get_palindrome_odd(s, i):
     return (offset-1)*2+1, subset
 
 def get_palindrome_even(s, i):
-    offseteven = 0
+    offset = 0
     p, n, pp, nn = i, i+1, i, i+1
     #print(p, n, s[p:n+1], end=" > ")
     while p>=0 and n<len(s) and s[p] == s[n]: 
-        offseteven += 1
+        offset += 1
         pp, nn = p, n
-        p, n = i-offseteven, i+1+offseteven
-        #print(p, n, s[p:n+1], offseteven, end=" > ")
+        p, n = i-offset, i+1+offset
+        #print(p, n, s[p:n+1], offset, end=" > ")
     subset = s[pp:nn]
-    #print("even", offseteven, subset)
+    #print("even", offset, subset)
     #print()
-    return offseteven*2, subset
+    return offset*2, subset
     
 def solution(s):
     mx = 0
