@@ -1,39 +1,44 @@
 #def solution(genres, plays):
 #    return 0
 from collections import defaultdict
-# 240503
+# 240905
 def solution(genres, plays):
-    num_for_genres = defaultdict(lambda:0)
-    num_in_genres = defaultdict(list)
+    gdict = defaultdict(list)
+    gsumdict = defaultdict(lambda:0)
     for i, (g, p) in enumerate(zip(genres, plays)):
-        num_for_genres[g] += p
-        num_in_genres[g] += [(i, p)]
+        gdict[g] += [(i, p)]
+        gsumdict[g] += p
+    # sort
+    for k, v in gdict.items():
+        gdict[k] = sorted(v, key=lambda x:x[1], reverse=True) # index 가 작은 것부터 정렬된 상태에서 재생수별 sort 라 둘 다 sort 됨
+    gsumdict = {k:v for k, v in sorted(gsumdict.items(), key=lambda k:k[1], reverse=True)}
+    #print(gdict)
     
     answer = []
-    #print(num_for_genres)
-    #print(num_in_genres)
-    sorted_num_for_genres = sorted(num_for_genres.items(), key=lambda x:x[1], reverse=True)
-    for k, v in sorted_num_for_genres:
-        for i, p in sorted(num_in_genres[k], key=lambda x:x[1], reverse=True)[:2]:
-        	answer += [i]
+    for k, v in gsumdict.items():
+        for id, _ in gdict[k][:2]:
+            answer.append(id)
+    
     return answer
+    
+    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# 240503
+#def solution(genres, plays):
+#    num_for_genres = defaultdict(lambda:0)
+#    num_in_genres = defaultdict(list)
+#    for i, (g, p) in enumerate(zip(genres, plays)):
+#        num_for_genres[g] += p
+#        num_in_genres[g] += [(i, p)]
+#    
+#    answer = []
+#    #print(num_for_genres)
+#    #print(num_in_genres)
+#    sorted_num_for_genres = sorted(num_for_genres.items(), key=lambda x:x[1], reverse=True)
+#    for k, v in sorted_num_for_genres:
+#        for i, p in sorted(num_in_genres[k], key=lambda x:x[1], reverse=True)[:2]:
+#        	answer += [i]
+#    return answer
 
 
 
