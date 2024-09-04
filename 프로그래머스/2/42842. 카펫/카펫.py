@@ -1,16 +1,20 @@
 #def solution(brown, yellow):
 #    return
 
-# 240503
-def solution(brown, yellow):
-    h = 3
-    w = 10000
-    while h <= w: # Anki NOTE. brown 을 기준으로 하니 더 간결해짐. 그러나, yellow 를 기준으로 한 코드가 속도 더 빠름.
-        if (brown - h*2) % 2 == 0:
-            w = (brown - h*2) // 2 + 2 # 현재 h 에 대해 brown 이 사각형을 만들 수 있다면 h, w 를 구함
-            if yellow == h*w - brown: # yellow 는 전체 - brown 임
-                return [w, h]
-        h += 1
+# 240905
+def get_w(h, b):
+    return (b - h*2)//2 + 2
+def solution(b, y):
+    h = 1
+    w = get_w(h, b)
+    while True:
+        if w * h == b + y:
+            return [w, h]
+        else:
+            h += 1
+            w = get_w(h, b)
+        #print(w, h)
+        
     return
 
 
@@ -29,11 +33,17 @@ def solution(brown, yellow):
 
 
 
-
-
-
-
-
+# 240503
+#def solution(brown, yellow):
+#    h = 3
+#    w = 10000
+#    while h <= w: # Anki NOTE. brown 을 기준으로 하니 더 간결해짐. 그러나, yellow 를 기준으로 한 코드가 속도 더 빠름.
+#        if (brown - h*2) % 2 == 0:
+#            w = (brown - h*2) // 2 + 2 # 현재 h 에 대해 brown 이 사각형을 만들 수 있다면 h, w 를 구함
+#            if yellow == h*w - brown: # yellow 는 전체 - brown 임
+#                return [w, h]
+#        h += 1
+#    return
 
 # 240314
 #def solution(brown, yellow):
