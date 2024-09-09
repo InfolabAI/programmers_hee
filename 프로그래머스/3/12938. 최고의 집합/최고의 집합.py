@@ -1,27 +1,19 @@
 def solution(n, s):
     return
 
-import heapq as hq
+#240909
 def solution(n, s):
     answer = []
-    if (s == 1) or s < n:
+    if (s == 1) or s < n: # NOTE 틀린 부분. 생각하지 못한 예외 상황들을 다루는 것이 필요함.
         return [-1]
     residual = 0
     for i in range(n):
-        if residual == s%n:
+        if residual == s%n: # NOTE 틀린 부분. s%n 을 최대한 1씩 각 elements 에 분배해야 곱이 최대값이 됨.
             answer += [s//n] 
         else:
             answer += [s//n + 1]
             residual += 1
     return sorted(answer)
-
-
-
-
-
-
-
-
 
 
 
