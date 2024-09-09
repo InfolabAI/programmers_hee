@@ -1,17 +1,19 @@
 def solution(n, s):
     return
+
 import heapq as hq
 def solution(n, s):
-    # 최대한 모든 숫자가 (s//n) 에 가깝거나 1커야 곱이 가장 높음
-    nums = [s//n for _ in range(n)]
-    if sum(nums) == 0:
+    answer = []
+    if (s == 1) or s < n:
         return [-1]
-    
-    for _ in range(s%n):
-        hq.heappush(nums, hq.heappop(nums)+1)
-    
-    nums.sort() # NOTE 틀린 부분. heap 은 오름차순 정렬을 보장하지 않으므로,sort 필요
-    return nums
+    residual = 0
+    for i in range(n):
+        if residual == s%n:
+            answer += [s//n] 
+        else:
+            answer += [s//n + 1]
+            residual += 1
+    return sorted(answer)
 
 
 
@@ -26,6 +28,22 @@ def solution(n, s):
 
 
 
+
+
+
+# 240510
+#import heapq as hq
+#def solution(n, s):
+#    # 최대한 모든 숫자가 (s//n) 에 가깝거나 1커야 곱이 가장 높음
+#    nums = [s//n for _ in range(n)]
+#    if sum(nums) == 0:
+#        return [-1]
+#    
+#    for _ in range(s%n):
+#        hq.heappush(nums, hq.heappop(nums)+1)
+#    
+#    nums.sort() # NOTE 틀린 부분. heap 은 오름차순 정렬을 보장하지 않으므로,sort 필요
+#    return nums
 
 
 
