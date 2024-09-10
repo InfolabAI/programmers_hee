@@ -1,10 +1,12 @@
 #def solution(n, stations, w):
 #    return
+
+# 240910
 def solution(n, stations, w):
     prev = 0
     blocks = []
     stations += [n+w+1]
-    for st in stations:
+    for st in stations: # 빈 공간들의 크기만 저장하고
         st = st-1
         tmp = st-w-prev
         if tmp > 0:
@@ -13,7 +15,7 @@ def solution(n, stations, w):
         #print(st, tmp, prev)
         
     answer = 0
-    for bl in blocks:
+    for bl in blocks: # 몇 개의 기지국으로 채울 수 있는지 저장
         answer += bl // (w*2+1)
         if bl % (w*2+1) > 0:
             answer += 1
