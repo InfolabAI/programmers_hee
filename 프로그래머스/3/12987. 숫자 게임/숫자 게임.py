@@ -1,17 +1,23 @@
 def solution(A, B):
     return answer
-# 240510
+
+# 240910
 def solution(A, B):
-    # 예제와 다르게 해결해도 됨. 둘 다 sort 하고 큰 수부터 차례로 비교해도 정답임.
-    A.sort(reverse=True)
-    B.sort(reverse=True)
-    i, answer = 0,0
-    for a in A:
-        if B[i] > a:
-            i += 1
-            answer += 1
+    answer = 0
+    A, B = sorted(A), sorted(B)
+    #print(A, B)
     
+    off_a, off_b = 0, 0
+    while off_a < len(A) and off_b < len(B):
+        if A[off_a] < B[off_b]: # B 승점
+            off_a += 1
+            off_b += 1
+            answer += 1
+        else:
+            off_b += 1
+        #print(off_a, off_b)
     return answer
+        
 
 
 
@@ -26,6 +32,19 @@ def solution(A, B):
 
 
 
+
+# 240510
+#def solution(A, B):
+#    # 예제와 다르게 해결해도 됨. 둘 다 sort 하고 큰 수부터 차례로 비교해도 정답임.
+#    A.sort(reverse=True)
+#    B.sort(reverse=True)
+#    i, answer = 0,0
+#    for a in A:
+#        if B[i] > a:
+#            i += 1
+#            answer += 1
+#    
+#    return answer
 
 
 
