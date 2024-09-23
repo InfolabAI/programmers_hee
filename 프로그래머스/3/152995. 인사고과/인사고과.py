@@ -13,11 +13,9 @@ def solution(scores):
             return -1
         
         if b >= maxb:
+            maxb = b # NOTE 틀린 부분. 여기서 삽입하면 max(maxb, b) 효과가 있음.
             if ta + tb < a + b: # NOTE 틀린 부분. 두 원소의 합이 원호보다 높을때만 answer += 1 을 해야 함.
                 answer += 1
-                
-        mina = min(mina, a)
-        maxb = max(maxb, b)
             
     return answer
 
