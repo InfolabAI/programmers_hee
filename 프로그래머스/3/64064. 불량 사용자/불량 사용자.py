@@ -1,3 +1,90 @@
+def solution(user_id, banned_id):
+    return
+
+def match(a, b):
+    # a:bid, b:uid
+    if len(a) != len(b):
+        return False
+    for ai, bi in zip(a, b):
+        if ai == '*':
+            continue
+        if ai != bi:
+            return False
+    return True
+
+# 241211
+def solution(user_id, banned_id):
+    from itertools import permutations  # Import permutations to generate all possible user ID orderings
+
+    banned_permutations = set()  # Set to store unique valid combinations of banned users
+
+    for perm in permutations(user_id, len(banned_id)):
+        # Iterate through all permutations of user IDs with the same length as banned IDs
+        if all(match(banned_id[i], perm[i]) for i in range(len(banned_id))):
+            # Check if all banned IDs match the corresponding user IDs in the permutation
+            banned_permutations.add(frozenset(perm))  # Add the valid combination as a frozenset to avoid duplicates
+
+    return len(banned_permutations)  # Return the number of unique valid combinations 
+
+
+## 241126
+# DFS
+## NOTE 틀린 부분. 미리 edge 를 생성하고 DFS 를 할 수 없는 이유: depth 를 들어갈 때마다 어떤 user_id 가 이전 depth 에서 선택되었는지 동적으로 게산행야 함. 예를 들어, frodo 가 이전에 선택되었다면, 다음에는 banned_id 와 매칭되었다고 해도 사용해서는 안 됨. 이 정보가 각 경우의 수마다 다르게 사용되어야 하므로, 가장 쉬운 방법은 재귀함수를 이용하는 것임.
+## Node 응모자 아이디, Edge 불량 사용자
+#from collections import defaultdict
+#def solution(user_id, banned_id):
+#    edges = defaultdict(list)
+#    for depth, bid in enumerate(banned_id):
+#        for uid in user_id:
+#            if match(bid, uid):
+#                edges[(uid, depth)].append("")
+#                for kid, kdepth in edges:
+#                    if kdepth == depth - 1:
+#                        edges[(kid, kdepth)].append(uid)
+#    print(dict(edges))
+#    return
+
+
+## 241004
+#def match(a, b):
+#    if len(a) != len(b):
+#        return False
+#    for ai, bi in zip(a, b):
+#        if ai == '*':
+#            continue
+#        if ai != bi:
+#            return False
+#    return True
+#
+#from collections import deque
+#def solution(user_id, banned_id):
+#    bid_list = []
+#    for bid in banned_id:
+#        bids = []
+#        for uid in user_id:
+#            print(bid, uid, match(bid, uid))
+#            if match(bid, uid):
+#                bids.append(uid)
+#        bid_list.append(bids)
+#    
+#    # 여기에서 bid_list 에 모든 경우의 수가 들어감. e.g., 테케 2번에 대해 [['frodo', 'crodo'], ['frodo', 'crodo'], ['abc123', 'frodoc']]
+#    
+#    # NOTE 틀린 부분. 중복 제외하고, 모든 경우의 수를 구하는 것은 dfs 로 해결가능함.
+#    result = set()
+#    stack = [(0, [])]  # Initialize stack with starting index and empty path
+#    
+#    while stack:
+#        idx, path = stack.pop()
+#        if idx == len(bid_list):
+#            result.add(frozenset(path))  # Add unique combination to result
+#            continue
+#        for user in bid_list[idx]:
+#            if user not in path:
+#                stack.append((idx + 1, path + [user]))
+#    return len(result)
+
+
+
 """
 NOTE 틀린 부분.
 1. 하나의 user_id 가 다수의 banned_id 에 걸린다면 어떻게 처리하는가? 예를 들어, frodo 가 'fr*d*' 에도 골리고, '*rodo' 에도 걸린다면?
@@ -21,49 +108,49 @@ Stack 〉
 []
 {('fradi', 'abc123'), ('frodo', 'abc123')}
 """
-# 240524
-from collections import defaultdict
-def match(stra, strb):
-    ret = True
-    if len(stra) != len(strb):
-        ret = False
-    for a, b in zip(stra, strb):
-        if b != '*' and a != b:
-            ret = False
-    #print(stra, strb, ret)
-    return ret
-
-def solution(user_id, banned_id):
-    use_user = [1 for _ in range(len(user_id))]
-    use_ban = [1 for _ in range(len(banned_id))]
-    if len(banned_id) == len(user_id): # NOTE 틀린 부분. 이걸로 테케 하나 통과
-        return 1
-    
-    stack = [(0, use_user, use_ban)]
-    answer = defaultdict(lambda:0)
-    min_cuse_ban = 1000
-    while stack:
-        depth, cuse_user, cuse_ban = stack.pop()
-        if depth == len(cuse_ban):
-            ulist = []
-            for uid in range(len(cuse_user)):
-                if cuse_user[uid]==0:
-                    ulist.append(user_id[uid])
-            #if len(ulist) == len(cuse_ban): #경우의수 1: cuse_ban 하나가 여러개의 cuse_user 와 매칭될 수 있으므로, cuse_ban 이 모두 0일 때, cuse_user 의 0의 수가 len(cuse_ban) 보다 작을 수 있고 작은 경우는 제외해야 함
-            answer[tuple(ulist)] += 1
-                
-        for bid in range(len(cuse_ban)):
-            if cuse_ban[bid] != 0:
-                for uid in range(len(cuse_user)):
-                    if cuse_user[uid] !=0 and sum(cuse_ban) != 0 and match(user_id[uid], banned_id[bid]): # NOTE 틀린 부분. 효율성 증가 부분. banned_id 하나가 여러개의 user_id 와 매칭될 수 있으므로, 이미 0 인 cuse_user 를 제외해야 함. 이 부분이 있으면, 위에 경우의 수1이 없어도 됨.
-                        cuse_user[uid] = 0
-                        cuse_ban[bid] = 0
-                        stack.append((depth+1, cuse_user[:], cuse_ban[:]))
-                        cuse_user[uid] = 1
-                        cuse_ban[bid] = 1
-        #print(stack)
-    #print(answer)
-    return len(answer)
+## 240524
+#from collections import defaultdict
+#def match(stra, strb):
+#    ret = True
+#    if len(stra) != len(strb):
+#        ret = False
+#    for a, b in zip(stra, strb):
+#        if b != '*' and a != b:
+#            ret = False
+#    #print(stra, strb, ret)
+#    return ret
+#
+#def solution(user_id, banned_id):
+#    use_user = [1 for _ in range(len(user_id))]
+#    use_ban = [1 for _ in range(len(banned_id))]
+#    if len(banned_id) == len(user_id): # NOTE 틀린 부분. 이걸로 테케 하나 통과
+#        return 1
+#    
+#    stack = [(0, use_user, use_ban)]
+#    answer = defaultdict(lambda:0)
+#    min_cuse_ban = 1000
+#    while stack:
+#        depth, cuse_user, cuse_ban = stack.pop()
+#        if depth == len(cuse_ban):
+#            ulist = []
+#            for uid in range(len(cuse_user)):
+#                if cuse_user[uid]==0:
+#                    ulist.append(user_id[uid])
+#            #if len(ulist) == len(cuse_ban): #경우의수 1: cuse_ban 하나가 여러개의 cuse_user 와 매칭될 수 있으므로, cuse_ban 이 모두 0일 때, cuse_user 의 0의 수가 len(cuse_ban) 보다 작을 수 있고 작은 경우는 제외해야 함
+#            answer[tuple(ulist)] += 1
+#                
+#        for bid in range(len(cuse_ban)):
+#            if cuse_ban[bid] != 0:
+#                for uid in range(len(cuse_user)):
+#                    if cuse_user[uid] !=0 and sum(cuse_ban) != 0 and match(user_id[uid], banned_id[bid]): # NOTE 틀린 부분. 효율성 증가 부분. banned_id 하나가 여러개의 user_id 와 매칭될 수 있으므로, 이미 0 인 cuse_user 를 제외해야 함. 이 부분이 있으면, 위에 경우의 수1이 없어도 됨.
+#                        cuse_user[uid] = 0
+#                        cuse_ban[bid] = 0
+#                        stack.append((depth+1, cuse_user[:], cuse_ban[:]))
+#                        cuse_user[uid] = 1
+#                        cuse_ban[bid] = 1
+#        #print(stack)
+#    #print(answer)
+#    return len(answer)
     
 # ref2 테케5 에서 9000ms 걸림. 엄청 느림
 #from itertools import product
