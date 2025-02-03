@@ -1,15 +1,38 @@
 def solution(sticker):
-    s = sticker
+    return
+
+# 250203
+def solution(sticker):
+    # NOTE 틀린 부분. 점화식은 두 칸이 아닌, 한칸단위로 진행한다
+    # case 1: 0번 선택
+    # case 2: 1번 선택
     if len(sticker) == 1: return sticker[0]
-    x1, x2 = s[0], s[0] # 처음에 0번째 선택시, 누적
-    y1, y2 = 0, s[1] # 처음에 1번째 선택시, 누적
+    s = sticker
+    x0, x1 = s[0], s[0] # 0번 선택하면, 1번 선택 못하니까
+    y0, y1 = 0, s[1]
+    #print(x0, x1, y0, y1)
     for i in range(2, len(s)):
-        # 첫번째 문제의 x 의 변화 [14, 14, 19, 25, 25, 34, 34, 44] 에서 19 -> 25 넘어가는 타이밍이 중요하다. 14 다음에 5를 고른 선택지(19)보다, 5 건너뛰고 11을 고른 선택지(25)가 더 낫다는 것을 max 를 통해 계산한 것이다.
-        x1, x2 = x2, max(x2, x1+s[i]) # 즉, 문제 내 11의 자리(3)을 계산할 때, 그동안의 누적 19와 14+11 중 더 큰 값으로 x2 를 처리함
-        y1, y2 = y2, max(y2, y1+s[i])
-        #print(x1, x2, y1, y2, '>', i)
-    
-    return max(x1, y2)
+        x0, x1 = x1, max(x1, x0 + s[i])
+        y0, y1 = y1, max(y1, y0 + s[i])
+        # NOTE 틀린 부분. x1 + s[i] 가 아니라 x0 + s[i] 임. x1 대신에 s[i] 를 선택하느냐 안 하느냐이니까.
+        #x0, x1 = x1, max(x1, x1 + s[i])
+        #y0, y1 = y1, max(y1, y1 + s[i])
+        #print(x0, x1, y0, y1, s, i)
+    return max(x0, y1) # NOTE 틀린 부분. 원형 구조에서 첫 번째 스티커를 선택하면 마지막 스티커를 선택할 수 없으므로, 첫 번째를 선택한 경우(`x0`)와 선택하지 않은 경우(`y1`) 각각의 최댓값을 구한 뒤 더 큰 값을 반환하기 위해 `return max(x0, y1)`를 사용합니다.
+
+# 240610
+#def solution(sticker):
+#    s = sticker
+#    if len(sticker) == 1: return sticker[0]
+#    x1, x2 = s[0], s[0] # 처음에 0번째 선택시, 누적
+#    y1, y2 = 0, s[1] # 처음에 1번째 선택시, 누적
+#    for i in range(2, len(s)):
+#        # 첫번째 문제의 x 의 변화 [14, 14, 19, 25, 25, 34, 34, 44] 에서 19 -> 25 넘어가는 타이밍이 중요하다. 14 다음에 5를 고른 선택지(19)보다, 5 건너뛰고 11을 고른 선택지(25)가 더 낫다는 것을 max 를 통해 계산한 것이다.
+#        x1, x2 = x2, max(x2, x1+s[i]) # 즉, 문제 내 11의 자리(3)을 계산할 때, 그동안의 누적 19와 14+11 중 더 큰 값으로 x2 를 처리함
+#        y1, y2 = y2, max(y2, y1+s[i])
+#        #print(x1, x2, y1, y2, '>', i)
+#    
+#    return max(x1, y2)
 
 # 240605 틀림. 단순하게 하나씩 건너가며 더한 것 중에 max 는 틀림
 #def solution(sticker):
