@@ -6,11 +6,12 @@ def solution(stones, k):
 # NOTE 틀린 부분. 무엇을 binary search 로 찾아야 하는가? 답: 나니즈 친구들의 수
 def possible(stones, k, md):
     tmp_len = 0
+    # max_len = 0
     for s in stones:
         if s < md:
             tmp_len += 1
             if tmp_len >= k:
-                return False # NOTE 틀린 부분. 효율상, for 문 다 돌 필요가 없음.
+                return False # NOTE 틀린 부분. 효율상, for 문 다 돌 필요가 없고, max_len 을 따로 게산할 필요 없음.
         else:
             tmp_len = 0
     return True
