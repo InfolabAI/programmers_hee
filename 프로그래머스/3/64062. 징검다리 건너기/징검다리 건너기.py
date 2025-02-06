@@ -2,38 +2,67 @@ def solution(stones, k):
     answer = 0
     return answer
 
-
-# 240621
+# 250206
+# NOTE 틀린 부분. 무엇을 binary search 로 찾아야 하는가? 답: 나니즈 친구들의 수
 def possible(stones, k, md):
-    jumped = 0
+    tmp_len = 0
     for s in stones:
-        if s <= md:
-            jumped+=1
+        if s < md:
+            tmp_len += 1
+            if tmp_len >= k:
+                return False # NOTE 틀린 부분. 효율상, for 문 다 돌 필요가 없음.
         else:
-            jumped = 0
-       	if jumped >= k:
-            #print(f"j {jumped}", end=" ")
-            return False
+            tmp_len = 0
     return True
-    
+         
 def solution(stones, k):
     answer = 0
-    mn, md, mx = 0, 0, max(stones)
-    while mn < mx:
-        # NOTE 틀린 부분. 어떻게 기준을 계산해야 할지 모르겠음.
-        md = (mx+mn)//2
-        #print(mn, md, mx, end=' ')
-        if possible(stones, k, md):
-            mn = md + 1
-            #print(f"mn up {mn}")
-            answer = mn
-        else:
-            mx = md
-            #print(f"mx dw {mx}")
-            answer = mx
+    # binary search 기준: 나니즈 친구들의 수
+    st, ed = 0, max(stones)+1
     
-    #print(mn, md, mx)
-    return answer
+    while st < ed:
+        md = (st+ed)//2
+        #print(md, possible(stones, k, md))
+        if possible(stones, k, md):
+            st = md + 1
+        else:
+            ed = md
+    
+    return st-1 # NOTE 틀린 부분. 이분 탐색 경계선 지정 양식. 답: `while st < ed:` 이고, `mid = (lo + hi) // 2`, `possible(mid)`가 True면 `lo = mid + 1` / False면 `hi = mid`, 마지막 `return lo - 1`
+
+
+
+# 240621
+#def possible(stones, k, md):
+#    jumped = 0
+#    for s in stones:
+#        if s <= md:
+#            jumped+=1
+#        else:
+#            jumped = 0
+#       	if jumped >= k:
+#            #print(f"j {jumped}", end=" ")
+#            return False
+#    return True
+#    
+#def solution(stones, k):
+#    answer = 0
+#    mn, md, mx = 0, 0, max(stones)
+#    while mn < mx:
+#        # NOTE 틀린 부분. 어떻게 기준을 계산해야 할지 모르겠음.
+#        md = (mx+mn)//2
+#        #print(mn, md, mx, end=' ')
+#        if possible(stones, k, md):
+#            mn = md + 1
+#            #print(f"mn up {mn}")
+#            answer = mn
+#        else:
+#            mx = md
+#            #print(f"mx dw {mx}")
+#            answer = mx
+#    
+#    #print(mn, md, mx)
+#    return answer
 
 
 #ref
