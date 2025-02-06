@@ -11,7 +11,7 @@ def possible(stones, k, md):
         if s < md:
             tmp_len += 1
             if tmp_len >= k:
-                return False # NOTE 틀린 부분. 효율상, for 문 다 돌 필요가 없고, max_len 을 따로 게산할 필요 없음.
+                return False # NOTE 틀린 부분. 효율상, for 문 다 돌 필요가 없고, max_len 을 따로 게산할 필요 없음. 이 두 가지를 모두 만족해야 효율성 통과함.
         else:
             tmp_len = 0
     return True
