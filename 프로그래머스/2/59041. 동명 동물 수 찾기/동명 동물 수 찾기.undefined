@@ -1,9 +1,31 @@
--- 코드를 입력하세요
-SELECT NAME
-     , COUNT(*) AS COUNT
-  FROM ANIMAL_INS
- WHERE NAME IS NOT NULL 
-   AND NAME <> ''         -- (1) WHERE 절은 '개별 행' 기준으로 필터링 (NULL 또는 빈 이름 제외)
- GROUP BY NAME
-HAVING COUNT(*) >= 2      -- (2) HAVING 절은 '그룹화된 결과'에 대한 조건 (COUNT 결과가 2 이상인 그룹만)
- ORDER BY NAME;           -- 이름(오름차순) 순으로 정렬
+SELECT NAME,	COUNT(*) AS COUNT
+FROM ANIMAL_INS
+WHERE NAME IS NOT NULL
+GROUP BY NAME
+HAVING COUNT(*) >= 2
+ORDER BY NAME
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- 250208
+-- -- 코드를 입력하세요
+-- SELECT NAME
+--      , COUNT(*) AS COUNT
+--   FROM ANIMAL_INS
+--  WHERE NAME IS NOT NULL 
+--    AND NAME <> ''         -- (1) WHERE 절은 '개별 행' 기준으로 필터링 (NULL 또는 빈 이름 제외)
+--  GROUP BY NAME
+-- HAVING COUNT(*) >= 2      -- (2) HAVING 절은 '그룹화된 결과'에 대한 조건 (COUNT 결과가 2 이상인 그룹만)
+--  ORDER BY NAME;           -- 이름(오름차순) 순으로 정렬
