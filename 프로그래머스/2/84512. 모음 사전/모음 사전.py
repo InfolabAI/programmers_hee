@@ -1,22 +1,42 @@
 #def solution(word):
 #    return 0
-# 240305
+# 250209
 def solution(word):
     """
-    AAAAA to AAAAE 1
-    AAAA to AAAE 1 + 1*5 > AAAA, AAAAA, AAAAE, AAAAI, AAAAO, AAAAU, AAAE
-    AAA to AAE 1 + 1*5 + 1*5^2
-    AA to AE 1 + (1+(1+5)*5)*5 = 1 + 1*5 + 1*5^2 + 1*5^3
-    A to E 1 + ((1+(1+5)*5)*5)*5 = 1 + 1*5 + 1*5^2 + 1*5^3 + 1*5^4
-    a(r^n - 1) / (r - 1) = 1(5^5-1)/(5-1) = 781
+    A to AAAAA: AA, AAA, AAAA, AAAAA 4
+    AAAAA to AAAAE: 1
+    AAAA to AAAE: AAAAA, AAAAE, AAAAI, AAAAO, AAAAU, AAAE 6 = 1 + 5
+    AAA to AAE: 1 + (1+5)*5 = 1 + 1*5 + 1*5**2
+    ...: 1 + 1*5 + 1*5**2 + 1*5**3 ...
+    a=1, r=5 의 등비수열: a(r**n-1) / (r-1)
     """
-    answer = 0
-    ex = list(range(1,6))[::-1]
-    for i, c in zip(ex, word):
-        answer += (pow(5, i) - 1) / (5 - 1) * "AEIOU".index(c) + 1
-        #print(c, answer)
-        
-    return answer
+    dist = {'A':0, 'E':1, 'I':2, 'O':3, 'U':4}
+    a, r = 1, 5
+    total = 0
+    for i, ch in enumerate(word):
+        n = 5-i
+        base = int(a * (r**n - 1) / (r - 1))
+        total += (base * dist[ch] + 1)
+        #print(total, base, dist[ch])
+    return total
+
+# 240305
+#def solution(word):
+#    """
+#    AAAAA to AAAAE 1
+#    AAAA to AAAE 1 + 1*5 > AAAA, AAAAA, AAAAE, AAAAI, AAAAO, AAAAU, AAAE
+#    AAA to AAE 1 + 1*5 + 1*5^2
+#    AA to AE 1 + (1+(1+5)*5)*5 = 1 + 1*5 + 1*5^2 + 1*5^3
+#    A to E 1 + ((1+(1+5)*5)*5)*5 = 1 + 1*5 + 1*5^2 + 1*5^3 + 1*5^4
+#    a(r^n - 1) / (r - 1) = 1(5^5-1)/(5-1) = 781
+#    """
+#    answer = 0
+#    ex = list(range(1,6))[::-1]
+#    for i, c in zip(ex, word):
+#        answer += (pow(5, i) - 1) / (5 - 1) * "AEIOU".index(c) + 1
+#        #print(c, answer)
+#        
+#    return answer
 
 
 
