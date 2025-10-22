@@ -2,6 +2,40 @@ def solution(gems):
     answer = []
     return answer
 
+#251022
+from collections import defaultdict
+def solution(gems):
+    answer = []
+    st = 0
+    ed = 0
+    length = len(gems)
+    types = len(set(gems))
+    #print(length, types)
+    gems_dict = defaultdict(lambda:0)
+    gems_dict[gems[ed]] += 1
+    while True:
+        cur_types = len(gems_dict)
+        if types == cur_types or ed == length-1:
+            gems_dict[gems[st]] -= 1
+            if gems_dict[gems[st]] <= 0:
+                del gems_dict[gems[st]]
+            if types == cur_types:
+                answer += [(st, ed)]
+            st += 1
+        else:
+            ed += 1
+            gems_dict[gems[ed]] += 1
+            
+        #print(gems_dict, answer)
+        if st == length-1:
+            break
+    
+    ans = (1, 10000000)
+    for st, ed in answer:
+        if ed - st < ans[1] - ans[0]:
+            ans = (st+1, ed+1)
+    
+    return ans
 
 
 
@@ -197,6 +231,7 @@ def solution(gems):
 7.  마지막으로, 정답 후보(`possibles`) 리스트에 저장된 모든 구간 중 가장 짧은 구간을 찾습니다. 만약 길이가 같다면, `possibles` 리스트에는 `start`가 작은 순서대로 저장되어 있으므로, 가장 먼저 찾은 구간이 정답이 됩니다.
 """
 
+"""
 # 딕셔너리의 키가 존재하지 않을 때 기본값(int의 경우 0)을 자동으로 생성해주는 defaultdict를 임포트합니다.
 from collections import defaultdict 
 
@@ -301,3 +336,5 @@ def solution(gems):
     
     # 찾은 가장 짧은 구간 [시작, 끝]을 반환합니다.
     return answer
+
+"""
